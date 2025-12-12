@@ -82,7 +82,8 @@ public class MusteriDB {
 
     public List<Musteri> tumMusteriler(){
         List<Musteri> musteriler = new ArrayList<>();
-        String sql = "SELECT * from musteriler ORDER BY id DESC";
+        String sql = "SELECT * from musteriler ORDER BY id DESC"
+                ;
 
         try(Statement st = connection.createStatement();
             ResultSet sonuc = st.executeQuery(sql)){
