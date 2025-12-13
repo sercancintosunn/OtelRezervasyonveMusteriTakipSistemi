@@ -56,13 +56,12 @@ public class MusteriDB {
         return null;
     }
 
-    public Musteri login(String kullanciBilgisi,String sifre){
-        String sql = "SELECT * from musteriler WHERE userName = ? OR email = ? OR , tcNo = ?";
+    public Musteri login(String tcNo,String sifre){
+        String sql = "SELECT * from musteriler WHERE tcNo = ?";
 
         try(PreparedStatement pst = connection.prepareStatement(sql)){
-            pst.setString(1,kullanciBilgisi);
-            pst.setString(2,kullanciBilgisi);
-            pst.setString(3,kullanciBilgisi);
+            pst.setString(1,tcNo);
+
 
             ResultSet sonuc = pst.executeQuery();
 
@@ -121,7 +120,7 @@ public class MusteriDB {
     }
 
     public boolean musteriGuncelle(Musteri musteri){
-        String sql = "UPDATE MUSTERİLER SET email = ?, telefon = ? WHERE id = ?";
+        String sql = "UPDATE musteriler SET email = ?, telefon = ? WHERE id = ?";
 
         try(PreparedStatement pst = connection.prepareStatement(sql)){
             pst.setString(1,musteri.getEmail());
@@ -138,7 +137,7 @@ public class MusteriDB {
     }
 
     public boolean sifreGuncelle(int musteriId,String yeniSifre){
-        String sql = "UPDATE MUSTERİLER SET sifre = ? WHERE id = ?";
+        String sql = "UPDATE musteriler SET sifre = ? WHERE id = ?";
 
         try(PreparedStatement pst = connection.prepareStatement(sql)){
             pst.setString(1,PasswordHelper.hashSifre(yeniSifre));
