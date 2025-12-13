@@ -45,7 +45,7 @@ public class RegisterFrame extends JFrame {
         topside.add(ad);
         topside.add(new JLabel("Soyad:"));
         soyad = new JTextField(11);
-        topside.add(tckn);
+        topside.add(soyad);
         topside.add(new JLabel("Email:"));
         email = new JTextField(40);
         topside.add(email);
