@@ -121,6 +121,14 @@ public class Rezervasyon {
         return (int) (gunFarki / (1000*60*60*24));
     }
 
+    public void setMusteri(Musteri musteri) {
+        this.musteri = musteri;
+    }
+
+    public void setOda(Oda oda) {
+        this.oda = oda;
+    }
+
     @Override
     public String toString() {
         return "Rezervasyon{" +
