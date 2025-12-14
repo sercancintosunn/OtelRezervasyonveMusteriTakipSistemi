@@ -92,6 +92,11 @@ public abstract class BaseMainFrame extends JFrame {
             dispose();
             new ProfilFrame().setVisible(true);
         });
+
+        btnOdalar.addActionListener(e -> {
+            dispose();
+            new OdalarFrame().setVisible(true);
+        });
     }
 
     public void showMessage(String message) {
