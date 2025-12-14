@@ -3,7 +3,9 @@ package com.otel.controller;
 import com.otel.model.Musteri;
 import com.otel.view.LoginFrame;
 import com.otel.database.MusteriDB;
+import com.otel.view.MainPageFrame;
 import com.otel.view.RegisterFrame;
+import com.otel.helper.SessionManager;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -51,7 +53,9 @@ public class RegisterController {
         musteriDB.musteriEkle(musteri);
         view.showMessage("Kayıt Başarılı!");
         view.dispose();
-        
+        SessionManager session = SessionManager.getInstance();
+        session.login(musteri);
+        new MainPageFrame().setVisible(true);
     }
 
 }
