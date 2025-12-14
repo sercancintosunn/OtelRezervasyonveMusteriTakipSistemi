@@ -1,7 +1,9 @@
 package com.otel.controller;
 
+import com.otel.helper.SessionManager;
 import com.otel.view.LoginFrame;
 import com.otel.database.MusteriDB;
+import com.otel.view.MainPageFrame;
 import com.otel.view.RegisterFrame;
 
 import java.awt.event.MouseAdapter;
@@ -40,7 +42,10 @@ public class LoginController {
 
         if (musteriDB.login(tckn,password) != null) {
             view.showMessage("Giriş başarılı!");
-            // new MainFrame().setVisible(true);
+            view.dispose();
+            SessionManager session = SessionManager.getInstance();
+            session.login(musteriDB.login(tckn, password));
+            new MainPageFrame().setVisible(true);
         } else {
             view.showMessage("Kullanıcı adı veya şifre hatalı!");
         }

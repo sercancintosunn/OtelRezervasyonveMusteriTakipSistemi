@@ -1,5 +1,6 @@
 package com.otel;
 
+import com.otel.helper.SessionManager;
 import com.otel.view.LoginFrame;
 import com.otel.view.MainPageFrame;
 
@@ -9,7 +10,11 @@ public class Main {
 
     public static void main(String[] arg){
         SwingUtilities.invokeLater(() -> {
-            new MainPageFrame().setVisible(true);
+            if (SessionManager.getInstance().getUser() == null) {
+                new LoginFrame().setVisible(true);
+            } else {
+                new MainPageFrame().setVisible(true);
+            }
         });
 
     }
