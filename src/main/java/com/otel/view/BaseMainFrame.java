@@ -1,4 +1,6 @@
 package com.otel.view;
+import com.otel.helper.SessionManager;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -9,7 +11,7 @@ public abstract class BaseMainFrame extends JFrame {
     protected JButton btnOdalar;
     protected JButton btnRezervasyon;
     protected JButton btnGecmisKonaklamalar;
-
+    protected JButton btnCikisYap;
     protected JPanel contentPanel;
 
     public BaseMainFrame() {
@@ -47,14 +49,15 @@ public abstract class BaseMainFrame extends JFrame {
         btnOdalar = createMenuButton("Odalar");
         btnRezervasyon = createMenuButton("Rezervasyonlarım");
         btnGecmisKonaklamalar = createMenuButton("Geçmiş Konaklamalarım");
-
+        btnCikisYap = createMenuButton("Çıkış Yap");
+        btnCikisYap.setBackground(Color.red);
+        btnCikisYap.setForeground(Color.white);
         sideBar.add(btnMain);
         sideBar.add(btnProfil);
         sideBar.add(btnOdalar);
         sideBar.add(btnRezervasyon);
         sideBar.add(btnGecmisKonaklamalar);
-
-
+        sideBar.add(btnCikisYap);
         contentPanel = new JPanel(new BorderLayout());
         contentPanel.setBackground(Color.WHITE);
 
@@ -108,6 +111,11 @@ public abstract class BaseMainFrame extends JFrame {
                 new GecmisKonaklamalarFrame().setVisible(true);
             });
         }
+        btnCikisYap.addActionListener(e -> {
+            dispose();
+            SessionManager.getInstance().logOut();
+            new LoginFrame().setVisible(true);
+        });
     }
 
     public void showMessage(String message) {

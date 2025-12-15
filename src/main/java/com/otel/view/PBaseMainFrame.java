@@ -1,4 +1,6 @@
 package com.otel.view;
+import com.otel.helper.SessionManager;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -7,7 +9,7 @@ public abstract class PBaseMainFrame extends JFrame {
     protected JButton btnRezervasyon;
     protected JButton btnMusteriler;
     protected JButton btnOdalar;
-
+    protected JButton btnCikisYap;
 
     protected JPanel contentPanel;
 
@@ -44,6 +46,10 @@ public abstract class PBaseMainFrame extends JFrame {
         btnOdalar = createMenuButton("Odalar");
         btnRezervasyon = createMenuButton("Rezervasyonlar");
         btnMusteriler = createMenuButton("Musteriler");
+        btnCikisYap = createMenuButton("Çıkış Yap");
+
+        btnCikisYap.setBackground(Color.red);
+        btnCikisYap.setForeground(Color.white);
 
         sideBar.add(btnOdalar);
         sideBar.add(btnRezervasyon);
@@ -90,6 +96,11 @@ public abstract class PBaseMainFrame extends JFrame {
         btnMusteriler.addActionListener(e -> {
             dispose();
             new PMusterilerFrame().setVisible(true);
+        });
+        btnCikisYap.addActionListener(e -> {
+            dispose();
+            SessionManager.getInstance().logOut();
+            new LoginFrame().setVisible(true);
         });
     }
 

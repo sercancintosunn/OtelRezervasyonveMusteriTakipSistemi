@@ -59,13 +59,11 @@ public class PersonelDB extends BaseDB {
         return null;
     }
 
-    public Personel login(String kullaniciBilgisi,String sifre){
-        String sql = "SELECT * FROM personel WHERE userName = ? OR email = ? OR tcNo = ?";
+    public Personel login(String tc,String sifre){
+        String sql = "SELECT * FROM personel WHERE tcNo = ?";
 
         try(PreparedStatement pst = connection.prepareStatement(sql)){
-            pst.setString(1,kullaniciBilgisi);
-            pst.setString(2,kullaniciBilgisi);
-            pst.setString(3,kullaniciBilgisi);
+            pst.setString(1,tc);
 
             ResultSet sonuc = pst.executeQuery();
 
