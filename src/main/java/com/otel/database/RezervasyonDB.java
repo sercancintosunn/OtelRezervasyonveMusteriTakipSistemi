@@ -8,12 +8,12 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RezervasyonDB {
+public class RezervasyonDB extends BaseDB {
 
-    private Connection connection;
+
 
     public RezervasyonDB(){
-        this.connection = DatabaseConnection.getInstance().getConnection();
+        super();
     }
 
     public boolean rezervasyonEkle(Rezervasyon rezervasyon){

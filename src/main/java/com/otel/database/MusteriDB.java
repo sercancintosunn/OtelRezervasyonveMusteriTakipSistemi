@@ -7,12 +7,12 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MusteriDB {
+public class MusteriDB extends BaseDB {
 
-    private Connection connection;
+
 
     public MusteriDB() {
-        this.connection = DatabaseConnection.getInstance().getConnection();
+        super();
     }
 
     public boolean musteriEkle(Musteri musteri) {

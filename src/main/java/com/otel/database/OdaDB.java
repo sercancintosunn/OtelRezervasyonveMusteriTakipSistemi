@@ -6,12 +6,12 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OdaDB {
+public class OdaDB extends BaseDB {
 
-    private Connection connection;
+
 
     public OdaDB(){
-        this.connection =   DatabaseConnection.getInstance().getConnection();
+        super();
     }
 
     public boolean odaEkle(Oda oda){
