@@ -7,6 +7,7 @@ import com.otel.model.Rezervasyon;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MusteriDetayiFrame extends JFrame {
@@ -17,95 +18,158 @@ public class MusteriDetayiFrame extends JFrame {
         initUI();
     }
 
-    private void initUI(){
-        setTitle("Rezervasyon");
-        setSize(600, 400);
+    private void initUI() {
+        setTitle("Müşteri Detayları ve Rezervasyon Geçmişi");
+        setSize(550, 700);
         setLocationRelativeTo(null);
         setResizable(false);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        RezervasyonDB rezervasyonDB = new RezervasyonDB();
 
-        List<Rezervasyon> list = rezervasyonDB.musteriRezervasyonlari(musteriID);;
-
-        JPanel listePanel = new JPanel();
-        listePanel.setLayout(new BoxLayout(listePanel, BoxLayout.Y_AXIS));
-        JScrollPane scrollPane = new JScrollPane(listePanel);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        listePanel.add(new JLabel("Rezervasyonları:"));
-        listePanel.add(new JLabel(""));
-        for(Rezervasyon r : list){
-            JPanel rezervasyonPanel = new JPanel(new GridLayout(7,2,10,10));
-            if(r.getDurum().equals("TAMAMLANDI")){
-                continue;
-            }
-            Oda oda = new OdaDB().getOda(r.getOdaId());
-            rezervasyonPanel.add(new JLabel("Oda No:"));
-            rezervasyonPanel.add(new JLabel(oda.getOdaNumarasi()));
-
-            rezervasyonPanel.add(new JLabel("Tip:"));
-            rezervasyonPanel.add(new JLabel(oda.getOdaTipi()));
-
-            rezervasyonPanel.add(new JLabel("Fiyat:"));
-            rezervasyonPanel.add(new JLabel(String.valueOf(r.getToplamFiyat())));
-
-            rezervasyonPanel.add(new JLabel("Kişi Sayısı:"));
-            rezervasyonPanel.add(new JLabel(String.valueOf(r.getKisiSayisi())));
-
-            rezervasyonPanel.add(new JLabel("Giriş Tarihi:"));
-            rezervasyonPanel.add(new JLabel(String.valueOf(r.getGirisTarihi())));
-
-            rezervasyonPanel.add(new JLabel("Çıkış Tarihi:"));
-            rezervasyonPanel.add(new JLabel(String.valueOf(r.getCikisTarihi())));
-
-            rezervasyonPanel.add(new JLabel("Durum:"));
-            rezervasyonPanel.add(new JLabel(String.valueOf(r.getDurum())));
-            listePanel.add(rezervasyonPanel);
-            listePanel.add(Box.createVerticalStrut(15));
-        }
+        JPanel mainContainer = new JPanel();
+        mainContainer.setLayout(new BoxLayout(mainContainer, BoxLayout.Y_AXIS));
+        mainContainer.setBackground(Color.WHITE);
+        mainContainer.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
 
-
-
-
-        listePanel.add(new JLabel("Geçmiş Konaklamaları:"));
-        listePanel.add(new JLabel(""));
-
-        for(Rezervasyon r : list){
-            JPanel gecmisKonaklamalarPanel = new JPanel(new GridLayout(8,2,10,10));
-
-
-            if(r.getDurum().equals("TAMAMLANDI")){
-                Oda oda = r.getOda();
-                gecmisKonaklamalarPanel.add(new JLabel("Oda No:"));
-                gecmisKonaklamalarPanel.add(new JLabel(oda.getOdaNumarasi()));
-
-                gecmisKonaklamalarPanel.add(new JLabel("Tip:"));
-                gecmisKonaklamalarPanel.add(new JLabel(oda.getOdaTipi()));
-
-                gecmisKonaklamalarPanel.add(new JLabel("Fiyat:"));
-                gecmisKonaklamalarPanel.add(new JLabel(String.valueOf(r.getToplamFiyat())));
-
-                gecmisKonaklamalarPanel.add(new JLabel("Kişi Sayısı:"));
-                gecmisKonaklamalarPanel.add(new JLabel(String.valueOf(r.getKisiSayisi())));
-
-                gecmisKonaklamalarPanel.add(new JLabel("Giriş Tarihi:"));
-                gecmisKonaklamalarPanel.add(new JLabel(String.valueOf(r.getGirisTarihi())));
-
-                gecmisKonaklamalarPanel.add(new JLabel("Çıkış Tarihi:"));
-                gecmisKonaklamalarPanel.add(new JLabel(String.valueOf(r.getCikisTarihi())));
-
-                gecmisKonaklamalarPanel.add(new JLabel("Durum:"));
-                gecmisKonaklamalarPanel.add(new JLabel(String.valueOf(r.getDurum())));
-            }
-
-            listePanel.add(gecmisKonaklamalarPanel);
-            listePanel.add(Box.createVerticalStrut(15));
-        }
-
+        JScrollPane scrollPane = new JScrollPane(mainContainer);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16); // Daha hızlı kaydırma için
+        scrollPane.setBorder(null);
         add(scrollPane, BorderLayout.CENTER);
 
 
+        RezervasyonDB rezervasyonDB = new RezervasyonDB();
+
+        List<Rezervasyon> tumRezervasyonlar = rezervasyonDB.musteriRezervasyonlari(musteriID);
+
+        List<Rezervasyon> aktifList = new ArrayList<>();
+        List<Rezervasyon> gecmisList = new ArrayList<>();
+
+        for (Rezervasyon r : tumRezervasyonlar) {
+            String durum = r.getDurum().toUpperCase();
+
+            if (durum.equals("TAMAMLANDI") || durum.equals("IPTAL")) {
+                gecmisList.add(r);
+            } else {
+
+                aktifList.add(r);
+            }
+        }
+
+
+        addSectionHeader(mainContainer, "Aktif Konaklamalar");
+
+        if (aktifList.isEmpty()) {
+            addInfoLabel(mainContainer, "Aktif bir rezervasyon bulunmamaktadır.");
+        } else {
+            for (Rezervasyon r : aktifList) {
+                mainContainer.add(createRezervasyonCard(r, true));
+                mainContainer.add(Box.createVerticalStrut(15));
+            }
+        }
+
+
+        mainContainer.add(Box.createVerticalStrut(20));
+        JSeparator separator = new JSeparator(SwingConstants.HORIZONTAL);
+        separator.setMaximumSize(new Dimension(Integer.MAX_VALUE, 1));
+        separator.setForeground(Color.GRAY);
+        mainContainer.add(separator);
+        mainContainer.add(Box.createVerticalStrut(20));
+
+
+        addSectionHeader(mainContainer, "Geçmiş Konaklamalar");
+
+        if (gecmisList.isEmpty()) {
+            addInfoLabel(mainContainer, "Geçmiş konaklama kaydı bulunmamaktadır.");
+        } else {
+            for (Rezervasyon r : gecmisList) {
+                mainContainer.add(createRezervasyonCard(r, false));
+                mainContainer.add(Box.createVerticalStrut(15));
+            }
+        }
     }
 
+
+    private void addSectionHeader(JPanel container, String title) {
+        JLabel label = new JLabel(title);
+        label.setFont(new Font("Arial", Font.BOLD, 18));
+        label.setForeground(new Color(45, 72, 110));
+        label.setAlignmentX(Component.LEFT_ALIGNMENT);
+        container.add(label);
+        container.add(Box.createVerticalStrut(15));
+    }
+
+
+    private void addInfoLabel(JPanel container, String text) {
+        JLabel label = new JLabel(text);
+        label.setFont(new Font("Arial", Font.ITALIC, 13));
+        label.setForeground(Color.GRAY);
+        label.setAlignmentX(Component.LEFT_ALIGNMENT);
+        container.add(label);
+        container.add(Box.createVerticalStrut(10));
+    }
+
+
+    private JPanel createRezervasyonCard(Rezervasyon r, boolean isActive) {
+
+        JPanel card = new JPanel(new GridLayout(7, 2, 5, 2));
+
+
+        card.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(isActive ? new Color(100, 149, 237) : Color.LIGHT_GRAY, isActive ? 2 : 1),
+                BorderFactory.createEmptyBorder(10, 15, 10, 15)
+        ));
+
+
+        card.setBackground(isActive ? Color.WHITE : new Color(245, 245, 245));
+        card.setMaximumSize(new Dimension(Integer.MAX_VALUE, 180));
+        card.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+
+        Oda oda = new OdaDB().getOda(r.getOdaId());
+
+
+        addLabelToCard(card, "Rezervasyon No:", String.valueOf(r.getId()));
+        addLabelToCard(card, "Oda No:", oda != null ? oda.getOdaNumarasi() : "-");
+        addLabelToCard(card, "Oda Tipi:", oda != null ? oda.getOdaTipi() : "-");
+        addLabelToCard(card, "Giriş Tarihi:", String.valueOf(r.getGirisTarihi()));
+        addLabelToCard(card, "Çıkış Tarihi:", String.valueOf(r.getCikisTarihi()));
+        addLabelToCard(card, "Toplam Tutar:", r.getToplamFiyat() + " TL");
+
+
+        JLabel lblDurumBaslik = new JLabel("Durum:");
+        lblDurumBaslik.setFont(new Font("Arial", Font.BOLD, 12));
+        card.add(lblDurumBaslik);
+
+        JLabel lblDurum = new JLabel(r.getDurum());
+        lblDurum.setFont(new Font("Arial", Font.BOLD, 12));
+
+
+        if (r.getDurum().equalsIgnoreCase("ONAYLANDI")) {
+            lblDurum.setForeground(new Color(0, 128, 0));
+        } else if (r.getDurum().equalsIgnoreCase("BEKLEMEDE")) {
+            lblDurum.setForeground(new Color(255, 140, 0));
+        } else if (r.getDurum().equalsIgnoreCase("IPTAL")) {
+            lblDurum.setForeground(Color.RED);
+        } else {
+            lblDurum.setForeground(Color.DARK_GRAY);
+        }
+        card.add(lblDurum);
+
+        return card;
+    }
+
+    private void addLabelToCard(JPanel card, String title, String value) {
+        JLabel lblTitle = new JLabel(title);
+        lblTitle.setFont(new Font("Arial", Font.PLAIN, 12));
+        lblTitle.setForeground(Color.DARK_GRAY);
+
+        JLabel lblValue = new JLabel(value);
+        lblValue.setFont(new Font("Arial", Font.BOLD, 12));
+        lblValue.setForeground(Color.BLACK);
+
+        card.add(lblTitle);
+        card.add(lblValue);
+    }
 }

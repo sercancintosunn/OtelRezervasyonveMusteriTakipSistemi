@@ -125,7 +125,7 @@ public class PRezervasyonEkleFrame extends JFrame {
         return gun <= 0 ? 1 : gun;
     }
 
-    // ===== GETTERLAR =====
+
 
     public JButton getBtnRezervasyon() {
         return btnRezervasyon;
@@ -147,8 +147,8 @@ public class PRezervasyonEkleFrame extends JFrame {
         return oda;
     }
 
-    public int getToplamFiyat() {
-        return toplamFiyat;
+    public double getToplamFiyat() {
+        return (double) toplamFiyat;
     }
 
     public void showMessage(String message) {

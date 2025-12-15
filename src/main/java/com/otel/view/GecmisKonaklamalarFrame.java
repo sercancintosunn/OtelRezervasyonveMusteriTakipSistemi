@@ -24,43 +24,49 @@ public class GecmisKonaklamalarFrame extends BaseMainFrame {
         konaklamalariYukle();
     }
 
+    public GecmisKonaklamalarFrame(int hedefMusteriId) {
+        super();
+        this.musteriId = hedefMusteriId;
+
+
+
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setTitle("Müşteri Geçmiş Konaklamaları (ID: " + musteriId + ")");
+
+        initContent();
+        konaklamalariYukle();
+
+
+    }
+
     @Override
     protected void initContent() {
         contentPanel.setLayout(new BorderLayout(10, 10));
         contentPanel.setBackground(Color.WHITE);
 
-        // --- Başlık ---
         JPanel ustPanel = new JPanel(new BorderLayout());
         ustPanel.setBackground(Color.WHITE);
         ustPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        JLabel baslikLabel = new JLabel("📚 KONAKLAMA GEÇMİŞİM");
+        JLabel baslikLabel = new JLabel("KONAKLAMA GEÇMİŞİM");
         baslikLabel.setFont(new Font("Arial", Font.BOLD, 20));
         ustPanel.add(baslikLabel, BorderLayout.WEST);
 
-        JButton yenileButton = new JButton("🔄 Yenile");
-        yenileButton.setFocusPainted(false);
-        yenileButton.addActionListener(e -> konaklamalariYukle());
-        ustPanel.add(yenileButton, BorderLayout.EAST);
-
         contentPanel.add(ustPanel, BorderLayout.NORTH);
 
-        // --- Orta Alan ---
         JPanel centerContainer = new JPanel(new BorderLayout(0, 10));
         centerContainer.setBackground(Color.WHITE);
 
-        // İstatistikler
         JPanel istatistikPanel = createIstatistikPanel();
         centerContainer.add(istatistikPanel, BorderLayout.NORTH);
 
-        // Tablo
         String[] columnNames = {"Rezervasyon No", "Oda No", "Oda Tipi", "Giriş Tarihi",
                 "Çıkış Tarihi", "Gün", "Kişi", "Toplam Ücret", "Detay"};
 
         tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 8; // Sadece detay butonu tıklanabilir
+                return column == 8;
             }
         };
 
@@ -76,7 +82,6 @@ public class GecmisKonaklamalarFrame extends BaseMainFrame {
 
         contentPanel.add(centerContainer, BorderLayout.CENTER);
 
-        // --- Alt Bilgi ---
         JPanel altPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         altPanel.setBackground(Color.WHITE);
         altPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
@@ -97,7 +102,6 @@ public class GecmisKonaklamalarFrame extends BaseMainFrame {
                 BorderFactory.createLineBorder(new Color(200, 200, 200))
         ));
 
-        // Toplam Konaklama
         JPanel konaklamaPanel = new JPanel(new BorderLayout());
         konaklamaPanel.setBackground(new Color(240, 248, 255));
         konaklamaPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
@@ -113,12 +117,11 @@ public class GecmisKonaklamalarFrame extends BaseMainFrame {
 
         panel.add(konaklamaPanel);
 
-        // Toplam Harcama
         JPanel harcamaPanel = new JPanel(new BorderLayout());
         harcamaPanel.setBackground(new Color(240, 248, 255));
         harcamaPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
-        JLabel harcamaBaslik = new JLabel("💰 Toplam Harcama");
+        JLabel harcamaBaslik = new JLabel("Toplam Harcama");
         harcamaBaslik.setFont(new Font("Arial", Font.PLAIN, 14));
         harcamaPanel.add(harcamaBaslik, BorderLayout.NORTH);
 
@@ -143,8 +146,6 @@ public class GecmisKonaklamalarFrame extends BaseMainFrame {
             String odaNumarasi = rez.getOda() != null ? rez.getOda().getOdaNumarasi() : "-";
             String odaTipi = rez.getOda() != null ? rez.getOda().getOdaTipi() : "-";
 
-            // getKonaklamaSuresi() veya getKonaklamaSüresi() metod ismine dikkat edin.
-            // Model sınıfınızda hangisiyse onu kullanın. Kodda 'getKonaklamaSüresi' varsayıldı.
             Object[] row = {
                     rez.getId(),
                     odaNumarasi,
@@ -172,14 +173,14 @@ public class GecmisKonaklamalarFrame extends BaseMainFrame {
         if (rez == null) return;
 
         String detay = String.format(
-                "📋 DETAYLAR\n\n" +
+                " DETAYLAR\n\n" +
                         "Rezervasyon No: %d\n" +
-                        "🏨 Oda: %s (%s)\n" +
-                        "📅 Giriş: %s\n" +
-                        "📅 Çıkış: %s\n" +
-                        "🌙 Süre: %d gün\n" +
-                        "💰 Tutar: %.2f TL\n" +
-                        "✔️ Durum: TAMAMLANDI\n",
+                        " Oda: %s (%s)\n" +
+                        " Giriş: %s\n" +
+                        " Çıkış: %s\n" +
+                        " Süre: %d gün\n" +
+                        " Tutar: %.2f TL\n" +
+                        "✔ Durum: TAMAMLANDI\n",
                 rez.getId(),
                 rez.getOda() != null ? rez.getOda().getOdaNumarasi() : "-",
                 rez.getOda() != null ? rez.getOda().getOdaTipi() : "-",
@@ -193,7 +194,6 @@ public class GecmisKonaklamalarFrame extends BaseMainFrame {
         JOptionPane.showMessageDialog(this, new JScrollPane(area), "Detay", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    // --- Tablo Yardımcı Sınıfları ---
     class ButtonRenderer extends JButton implements javax.swing.table.TableCellRenderer {
         public ButtonRenderer() {
             setOpaque(true);

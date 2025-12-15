@@ -26,7 +26,7 @@ public abstract class BaseMainFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
 
-        // HEADER
+
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setPreferredSize(new Dimension(0,60));
         headerPanel.setBackground(new Color(45, 72, 110));
@@ -38,7 +38,7 @@ public abstract class BaseMainFrame extends JFrame {
 
         headerPanel.add(titleLabel, BorderLayout.WEST);
 
-        // SIDEBAR
+
         JPanel sideBar = new JPanel();
         sideBar.setPreferredSize(new Dimension(250, 0));
         sideBar.setBackground(Color.BLACK);

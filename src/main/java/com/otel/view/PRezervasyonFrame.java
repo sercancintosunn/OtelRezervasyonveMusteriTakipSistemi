@@ -40,7 +40,7 @@ public class PRezervasyonFrame extends PBaseMainFrame {
         btnRezervasyonEkle = new JButton("Rezervasyon Ekle");
         rezervasyonContainer.add(btnRezervasyonEkle);
 
-        // Observer Subject'i oluştur ve Email observer'ını ekle
+
         RezervasyonSubject rezervasyonSubject = new RezervasyonSubject();
         rezervasyonSubject.ekle(new Email());
 
@@ -92,39 +92,39 @@ public class PRezervasyonFrame extends PBaseMainFrame {
                 rezervasyonPanel.add(btnOnayla);
                 rezervasyonPanel.add(btnIptal);
 
-                // İPTAL BUTONU - Observer Pattern ile güncellendi
+
                 btnIptal.addActionListener(e -> {
-                    // Rezervasyon nesnesini müşteri bilgisiyle birlikte hazırla
+
                     r.setMusteri(musteri);
                     r.setOda(oda);
 
-                    // State Pattern: Durum değişikliğini veritabanına kaydet
+
                     IRezervasyonState durumBeklemede = RezervasyonFactory.getState("BEKLEMEDE");
                     durumBeklemede.iptalEt(r);
 
-                    // Observer Pattern: Müşteriye bildirim gönder
+
                     rezervasyonSubject.bilgiObserver(r, "IPTAL");
 
-                    // UI'ı güncelle
+
                     showMessage("Rezervasyon başarıyla iptal edilmiştir!");
                     dispose();
                     new PRezervasyonFrame().setVisible(true);
                 });
 
-                // ONAYLA BUTONU - Observer Pattern ile güncellendi
+
                 btnOnayla.addActionListener(e -> {
-                    // Rezervasyon nesnesini müşteri bilgisiyle birlikte hazırla
+
                     r.setMusteri(musteri);
                     r.setOda(oda);
 
-                    // State Pattern: Durum değişikliğini veritabanına kaydet
+
                     IRezervasyonState durumBeklemede = RezervasyonFactory.getState("BEKLEMEDE");
                     durumBeklemede.onayla(r);
 
 
                     rezervasyonSubject.bilgiObserver(r, "ONAYLANDI");
 
-                    // UI'ı güncelle
+
                     showMessage("Rezervasyon başarıyla onaylanmıştır!");
                     dispose();
                     new PRezervasyonFrame().setVisible(true);
