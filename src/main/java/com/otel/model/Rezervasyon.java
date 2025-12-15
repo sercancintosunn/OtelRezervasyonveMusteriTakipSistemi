@@ -13,6 +13,7 @@ public class Rezervasyon {
     private int kisiSayisi;
     private double toplamFiyat;
     private String durum;
+    private String odemeYontemi;
     private Timestamp oluşturmaTarihi;
 
     private Musteri musteri;
@@ -23,7 +24,7 @@ public class Rezervasyon {
     }
 
     public Rezervasyon(int id,int musteriId,int odaId,Date girisTarihi,Date cikisTarihi,int kisiSayisi,
-                       double toplamFiyat,String durum,Timestamp oluşturmaTarihi){
+                       double toplamFiyat,String durum,String odemeYontemi,Timestamp oluşturmaTarihi){
         this.id = id;
         this.musteriId = musteriId;
         this.odaId = odaId;
@@ -32,7 +33,16 @@ public class Rezervasyon {
         this.kisiSayisi = kisiSayisi;
         this.toplamFiyat = toplamFiyat;
         this.durum = durum;
+        this.odemeYontemi = odemeYontemi;
         this.oluşturmaTarihi = oluşturmaTarihi;
+    }
+
+    public String getOdemeYontemi() {
+        return odemeYontemi;
+    }
+
+    public void setOdemeYontemi(String odemeYontemi) {
+        this.odemeYontemi = odemeYontemi;
     }
 
     public int getId(){

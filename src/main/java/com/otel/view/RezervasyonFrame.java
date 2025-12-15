@@ -79,9 +79,8 @@ public class RezervasyonFrame extends JFrame {
         mainPanel.add(pnlEkstralar);
 
 
-        JLabel lblFiyatText = new JLabel("Fiyat:");
-        JLabel lblFiyatValue = new JLabel(String.valueOf(oda.getFiyat()));
-        mainPanel.add(lblFiyatText);
+        lblFiyatValue = new JLabel(String.valueOf((int) oda.getFiyat()));
+        mainPanel.add(new JLabel("Fiyat:"));
         mainPanel.add(lblFiyatValue);
 
 

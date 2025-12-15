@@ -7,12 +7,16 @@ import com.otel.database.RezervasyonDB;
 import com.otel.model.Musteri;
 import com.otel.model.Oda;
 import com.otel.model.Rezervasyon;
+import com.otel.observer.Email;
+import com.otel.observer.RezervasyonSubject;
+import com.otel.state.IRezervasyonState;
+import com.otel.state.RezervasyonFactory;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class PRezervasyonFrame extends PBaseMainFrame{
+public class PRezervasyonFrame extends PBaseMainFrame {
     private JButton btnIptal;
     private JButton btnOnayla;
     private JButton btnRezervasyonEkle;
@@ -35,6 +39,11 @@ public class PRezervasyonFrame extends PBaseMainFrame{
         List<Rezervasyon> tumRezervasyonlar = new RezervasyonDB().tumRezervasyonlar();
         btnRezervasyonEkle = new JButton("Rezervasyon Ekle");
         rezervasyonContainer.add(btnRezervasyonEkle);
+
+        // Observer Subject'i oluştur ve Email observer'ını ekle
+        RezervasyonSubject rezervasyonSubject = new RezervasyonSubject();
+        rezervasyonSubject.ekle(new Email());
+
         for(Rezervasyon r : tumRezervasyonlar){
             Oda oda = new OdaDB().getOda(r.getOdaId());
 
@@ -83,16 +92,40 @@ public class PRezervasyonFrame extends PBaseMainFrame{
                 rezervasyonPanel.add(btnOnayla);
                 rezervasyonPanel.add(btnIptal);
 
+                // İPTAL BUTONU - Observer Pattern ile güncellendi
                 btnIptal.addActionListener(e -> {
+                    // Rezervasyon nesnesini müşteri bilgisiyle birlikte hazırla
+                    r.setMusteri(musteri);
+                    r.setOda(oda);
+
+                    // State Pattern: Durum değişikliğini veritabanına kaydet
+                    IRezervasyonState durumBeklemede = RezervasyonFactory.getState("BEKLEMEDE");
+                    durumBeklemede.iptalEt(r);
+
+                    // Observer Pattern: Müşteriye bildirim gönder
+                    rezervasyonSubject.bilgiObserver(r, "IPTAL");
+
+                    // UI'ı güncelle
                     showMessage("Rezervasyon başarıyla iptal edilmiştir!");
-                    new RezervasyonDB().rezervasyonDurumGuncelle(r.getId(),"IPTAL");
                     dispose();
                     new PRezervasyonFrame().setVisible(true);
                 });
 
+                // ONAYLA BUTONU - Observer Pattern ile güncellendi
                 btnOnayla.addActionListener(e -> {
+                    // Rezervasyon nesnesini müşteri bilgisiyle birlikte hazırla
+                    r.setMusteri(musteri);
+                    r.setOda(oda);
+
+                    // State Pattern: Durum değişikliğini veritabanına kaydet
+                    IRezervasyonState durumBeklemede = RezervasyonFactory.getState("BEKLEMEDE");
+                    durumBeklemede.onayla(r);
+
+
+                    rezervasyonSubject.bilgiObserver(r, "ONAYLANDI");
+
+                    // UI'ı güncelle
                     showMessage("Rezervasyon başarıyla onaylanmıştır!");
-                    new RezervasyonDB().rezervasyonDurumGuncelle(r.getId(),"ONAYLANDI");
                     dispose();
                     new PRezervasyonFrame().setVisible(true);
                 });
@@ -101,7 +134,6 @@ public class PRezervasyonFrame extends PBaseMainFrame{
             rezervasyonContainer.add(rezervasyonPanel);
             rezervasyonContainer.add(Box.createVerticalStrut(10));
         }
-
 
         contentPanel.add(scrollPane, BorderLayout.CENTER);
     }
