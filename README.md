@@ -118,4 +118,34 @@ Giriş Sayfası:
 
 <img width="723" height="484" alt="image" src="https://github.com/user-attachments/assets/d2a370fa-f510-40f9-90e7-ffd275ff107c" />
 
+Kayıt Ol:
+<img width="1173" height="882" alt="Ekran görüntüsü 2025-12-15 230856" src="https://github.com/user-attachments/assets/c45fc8d4-dbd5-4fa3-b17d-3129366759a1" />
+
+
+Ana Sayfa:
+<img width="1474" height="1030" alt="Ekran görüntüsü 2025-12-15 230651" src="https://github.com/user-attachments/assets/1aeaac6e-36dd-4d55-b914-2bc166a5dc4a" />
+
+
+Personel Rezervasyon Ekleme Ekranı:
+<img width="1475" height="1035" alt="Ekran görüntüsü 2025-12-15 230617" src="https://github.com/user-attachments/assets/89038914-e088-44f8-a6d1-ddbab65cf4c7" />
+
+
+Müşteri Oda Rezerve Etme Ekranı:
+<img width="1468" height="1030" alt="Ekran görüntüsü 2025-12-15 230704" src="https://github.com/user-attachments/assets/38441354-0bc2-4300-a276-d91449cedd92" />
+
+
+Müşteri Profil Ekranı:
+<img width="1470" height="1032" alt="Ekran görüntüsü 2025-12-15 230723" src="https://github.com/user-attachments/assets/31d61fd5-07a8-4e8a-8998-6826919d3473" />
+
+
+Personel Müşteri Detaylarını ve Rezervasyon Detayları Ekranı:
+<img width="1469" height="1034" alt="Ekran görüntüsü 2025-12-15 230805" src="https://github.com/user-attachments/assets/026edc40-294c-4f75-85c6-3603c40fef5e" />
+
+
+
+
+
+
+
+
 
