@@ -24,7 +24,7 @@ public class RegisterFrame extends JFrame {
 
     private void initUI() {
         setTitle("Otel Yönetim Sistemi - Kayıt Ol");
-        setSize(600,400);
+        setSize(800,600);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);

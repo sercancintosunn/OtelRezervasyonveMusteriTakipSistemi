@@ -40,7 +40,7 @@ public abstract class PBaseMainFrame extends JFrame {
 
         JPanel sideBar = new JPanel();
         sideBar.setPreferredSize(new Dimension(250, 0));
-        sideBar.setBackground(Color.BLACK);
+        sideBar.setBackground(new Color(45, 72, 110));
         sideBar.setLayout(new BoxLayout(sideBar, BoxLayout.Y_AXIS));
 
         btnOdalar = createMenuButton("Odalar");
@@ -54,6 +54,7 @@ public abstract class PBaseMainFrame extends JFrame {
         sideBar.add(btnOdalar);
         sideBar.add(btnRezervasyon);
         sideBar.add(btnMusteriler);
+        sideBar.add(btnCikisYap);
 
 
         contentPanel = new JPanel(new BorderLayout());
@@ -73,7 +74,7 @@ public abstract class PBaseMainFrame extends JFrame {
         btn.setFocusPainted(false);
         btn.setBorderPainted(false);
         btn.setHorizontalAlignment(SwingConstants.LEFT);
-        btn.setBackground(Color.RED);
+        btn.setBackground(new Color(45, 72, 110));
         btn.setForeground(Color.WHITE);
         btn.setFont(new Font("Arial", Font.PLAIN, 15));
         btn.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));

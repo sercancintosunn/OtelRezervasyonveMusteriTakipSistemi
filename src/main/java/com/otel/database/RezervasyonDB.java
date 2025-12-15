@@ -265,6 +265,7 @@ public class RezervasyonDB extends BaseDB {
             rezervasyon.setKisiSayisi(sonuc.getInt("kisiSayisi"));
             rezervasyon.setToplamFiyat(sonuc.getDouble("toplamFiyat"));
             rezervasyon.setDurum(sonuc.getString("durum"));
+            rezervasyon.setOdemeYontemi(sonuc.getString("odemeYontemi"));
             return rezervasyon;
         } catch (SQLException e) {
             System.err.println("Rezervasyon nesnesine dönüştürme hatası: " + e.getMessage());

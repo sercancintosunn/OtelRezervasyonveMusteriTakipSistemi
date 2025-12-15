@@ -20,7 +20,7 @@ public class MusteriDetayiFrame extends JFrame {
 
     private void initUI() {
         setTitle("Müşteri Detayları ve Rezervasyon Geçmişi");
-        setSize(550, 700);
+        setSize(550, 750);
         setLocationRelativeTo(null);
         setResizable(false);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -34,7 +34,7 @@ public class MusteriDetayiFrame extends JFrame {
 
         JScrollPane scrollPane = new JScrollPane(mainContainer);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.getVerticalScrollBar().setUnitIncrement(16); // Daha hızlı kaydırma için
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         scrollPane.setBorder(null);
         add(scrollPane, BorderLayout.CENTER);
 
@@ -113,7 +113,7 @@ public class MusteriDetayiFrame extends JFrame {
 
     private JPanel createRezervasyonCard(Rezervasyon r, boolean isActive) {
 
-        JPanel card = new JPanel(new GridLayout(7, 2, 5, 2));
+        JPanel card = new JPanel(new GridLayout(8, 2, 5, 2));
 
 
         card.setBorder(BorderFactory.createCompoundBorder(
@@ -123,7 +123,7 @@ public class MusteriDetayiFrame extends JFrame {
 
 
         card.setBackground(isActive ? Color.WHITE : new Color(245, 245, 245));
-        card.setMaximumSize(new Dimension(Integer.MAX_VALUE, 180));
+        card.setMaximumSize(new Dimension(Integer.MAX_VALUE, 220));
         card.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 
@@ -137,6 +137,8 @@ public class MusteriDetayiFrame extends JFrame {
         addLabelToCard(card, "Çıkış Tarihi:", String.valueOf(r.getCikisTarihi()));
         addLabelToCard(card, "Toplam Tutar:", r.getToplamFiyat() + " TL");
 
+        card.add(new JLabel("Ödeme Yöntemi:"));
+        card.add(createOdemeBadge(r.getOdemeYontemi()));
 
         JLabel lblDurumBaslik = new JLabel("Durum:");
         lblDurumBaslik.setFont(new Font("Arial", Font.BOLD, 12));
@@ -171,5 +173,38 @@ public class MusteriDetayiFrame extends JFrame {
 
         card.add(lblTitle);
         card.add(lblValue);
+    }
+
+    private JPanel createOdemeBadge(String odemeTipi) {
+        JPanel badgePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        badgePanel.setOpaque(false);
+
+        JLabel lblOdeme = new JLabel();
+        lblOdeme.setFont(new Font("Arial", Font.BOLD, 12));
+        lblOdeme.setOpaque(true);
+        lblOdeme.setBorder(BorderFactory.createEmptyBorder(2, 6, 2, 6)); // Padding
+
+        if (odemeTipi == null) odemeTipi = "BELIRSIZ";
+
+        switch (odemeTipi.toUpperCase()) {
+            case "NAKIT":
+                lblOdeme.setText("Nakit");
+
+                lblOdeme.setForeground(new Color(0, 100, 0));
+                break;
+            case "KREDIKARTI":
+            case "KREDİ KARTI":
+                lblOdeme.setText("Kredi Kartı");
+                lblOdeme.setForeground(new Color(0, 0, 139));
+                break;
+            default:
+                lblOdeme.setText(odemeTipi);
+                lblOdeme.setBackground(Color.LIGHT_GRAY);
+                lblOdeme.setForeground(Color.BLACK);
+                break;
+        }
+
+        badgePanel.add(lblOdeme);
+        return badgePanel;
     }
 }

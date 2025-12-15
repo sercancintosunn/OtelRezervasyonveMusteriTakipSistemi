@@ -4,6 +4,10 @@ import com.otel.controller.PRezervasyonController;
 import com.otel.controller.PRezervasyonEkleController;
 import com.otel.controller.RezervasyonController;
 import com.otel.database.OdaDB;
+import com.otel.decorator.HavuzDecorator;
+import com.otel.decorator.IOdaComponent;
+import com.otel.decorator.KahvaltiDecorator;
+import com.otel.decorator.OtoparkDecorator;
 import com.otel.model.Oda;
 
 import javax.swing.*;
@@ -26,6 +30,10 @@ public class PRezervasyonEkleFrame extends JFrame {
     private JLabel lblOdaTipi;
     private JLabel lblFiyatValue;
 
+    private JCheckBox chkHavuz;
+    private JCheckBox chkKahvalti;
+    private JCheckBox chkOtopark;
+
     private int toplamFiyat;
 
     private OdaDB odalar = new OdaDB();
@@ -37,12 +45,13 @@ public class PRezervasyonEkleFrame extends JFrame {
 
     private void initUI() {
         setTitle("Rezervasyon Ekle");
-        setSize(600, 400);
+        setSize(750, 550);
         setLocationRelativeTo(null);
         setResizable(false);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        JPanel mainPanel = new JPanel(new GridLayout(8, 2, 10, 10));
+        JPanel mainPanel = new JPanel(new GridLayout(9, 2, 10, 10));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         mainPanel.add(new JLabel("Müşteri TC:"));
         musteriTC = new JTextField();
@@ -77,6 +86,20 @@ public class PRezervasyonEkleFrame extends JFrame {
         mainPanel.add(new JLabel("Çıkış Tarihi:"));
         mainPanel.add(cikisTarihi);
 
+
+        mainPanel.add(new JLabel("Ekstra Hizmetler"));
+
+        JPanel pnlEkstralar = new JPanel(new GridLayout(3,1,0,5));
+        chkKahvalti = new JCheckBox("Kahvaltı (+300 TL)");
+        chkHavuz = new JCheckBox("Havuz (+500 TL)");
+        chkOtopark = new JCheckBox("Otapark (+700 TL");
+
+        pnlEkstralar.add(chkHavuz);
+        pnlEkstralar.add(chkKahvalti);
+        pnlEkstralar.add(chkOtopark);
+
+        mainPanel.add(pnlEkstralar);
+
         lblFiyatValue = new JLabel(String.valueOf((int) oda.getFiyat()));
         mainPanel.add(new JLabel("Fiyat:"));
         mainPanel.add(lblFiyatValue);
@@ -95,11 +118,17 @@ public class PRezervasyonEkleFrame extends JFrame {
         cikisTarihi.addChangeListener(e -> fiyatGuncelle());
         comboKisiSayisi.addActionListener(e -> fiyatGuncelle());
 
+        chkKahvalti.addActionListener(e -> fiyatGuncelle());
+        chkHavuz.addActionListener(e -> fiyatGuncelle());
+        chkOtopark.addActionListener(e -> fiyatGuncelle());
+
         btnRezervasyon = new JButton("Rezerve Et");
         mainPanel.add(new JLabel(""));
         mainPanel.add(btnRezervasyon);
 
         add(mainPanel, BorderLayout.CENTER);
+
+
     }
 
     private void kisiSayisiGuncelle(int kapasite) {
@@ -113,8 +142,28 @@ public class PRezervasyonEkleFrame extends JFrame {
         Integer kisi = (Integer) comboKisiSayisi.getSelectedItem();
         if (kisi == null) return;
 
+        IOdaComponent hesaplananOda = new IOdaComponent() {
+            @Override
+            public String getAciklama() {
+                return oda.getOdaTipi();
+            }
+
+            @Override
+            public double getFiyat() {
+                return oda.getFiyat();
+            }
+        };
+        if (chkKahvalti.isSelected()) {
+            hesaplananOda = new KahvaltiDecorator(hesaplananOda);
+        }
+        if (chkHavuz.isSelected()) {
+            hesaplananOda = new HavuzDecorator(hesaplananOda);
+        }
+        if (chkOtopark.isSelected()) {
+            hesaplananOda = new OtoparkDecorator(hesaplananOda);
+        }
         int gun = gunSayisiHesaplama(getGirisTarihi(), getCikisTarihi());
-        toplamFiyat = (int) (oda.getFiyat() * kisi * gun);
+        toplamFiyat = (int) (hesaplananOda.getFiyat() * kisi * gun);
 
         lblFiyatValue.setText(String.valueOf(toplamFiyat));
     }
@@ -124,7 +173,6 @@ public class PRezervasyonEkleFrame extends JFrame {
         int gun = (int) (farkMillis / (1000 * 60 * 60 * 24));
         return gun <= 0 ? 1 : gun;
     }
-
 
 
     public JButton getBtnRezervasyon() {
