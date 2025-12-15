@@ -1,8 +1,10 @@
 package com.otel.model;
 
+import com.otel.decorator.IOdaComponent;
+
 import java.security.PublicKey;
 
-public class Oda {
+public class Oda implements IOdaComponent {
     private int id;
     private String odaNumarasi;
     private String odaTipi;
@@ -21,6 +23,11 @@ public class Oda {
         this.kapasite = kapasite;
         this.fiyat = fiyat;
         this.durum = durum;
+    }
+
+    @Override
+    public String getAciklama() {
+        return odaTipi;
     }
 
     public int getId(){
