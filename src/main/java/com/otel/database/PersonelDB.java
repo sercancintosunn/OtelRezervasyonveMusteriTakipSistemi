@@ -9,12 +9,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class PersonelDB {
+public class PersonelDB extends BaseDB {
 
-    private Connection connection;
+
 
     public PersonelDB(){
-        this.connection = DatabaseConnection.getInstance().getConnection();
+        super();
     }
 
     public boolean personelEkle(Personel personel){
