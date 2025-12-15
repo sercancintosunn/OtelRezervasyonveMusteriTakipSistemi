@@ -12,7 +12,7 @@ public class PMusterilerFrame extends PBaseMainFrame{
     private JButton musteriDetayi;
     private JButton musteriyiDuzenle;
     private PMusterilerController controller;
-
+    private JButton btnMusteriEkle;
     public PMusterilerFrame(){
         super();
         initContent();
@@ -29,6 +29,13 @@ public class PMusterilerFrame extends PBaseMainFrame{
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
         MusteriDB musteriDB = new MusteriDB();
+
+        btnMusteriEkle = new JButton("Müşteri Ekle");
+        musterilerContainer.add(btnMusteriEkle);
+
+        btnMusteriEkle.addActionListener(e -> {
+            new MusteriEkleFrame().setVisible(true);
+        });
 
         for (Musteri musteri : musteriDB.tumMusteriler()) {
             JPanel musteriPanel = new JPanel(new GridLayout(6, 2, 10, 5));
