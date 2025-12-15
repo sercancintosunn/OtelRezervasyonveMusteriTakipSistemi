@@ -21,7 +21,7 @@ public class RezervasyonController {
             view.showMessage("Rezervasyonunuz Başarıyla Oluşturuldu");
             int musteriID = SessionManager.getInstance().getUserId();
             int odaID = view.getOda().getId();
-            Rezervasyon rezervasyon = new Rezervasyon(0,musteriID,odaID,view.getGirisTarihi(),view.getGirisTarihi(),view.getKisiSayisi(),view.getToplamFiyat(),"BEKLEMEDE",new Timestamp(System.currentTimeMillis()));
+            Rezervasyon rezervasyon = new Rezervasyon(0,musteriID,odaID,view.getGirisTarihi(),view.getCikisTarihi(),view.getKisiSayisi(),view.getToplamFiyat(),"BEKLEMEDE",new Timestamp(System.currentTimeMillis()));
             new RezervasyonDB().rezervasyonEkle(rezervasyon);
             view.dispose();
         });
