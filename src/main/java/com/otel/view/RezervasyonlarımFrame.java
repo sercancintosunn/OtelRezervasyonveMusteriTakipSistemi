@@ -2,6 +2,7 @@ package com.otel.view;
 import com.otel.controller.RezervasyonlarımController;
 import com.otel.database.OdaDB;
 import com.otel.database.RezervasyonDB;
+import com.otel.helper.SessionManager;
 import com.otel.model.Oda;
 import com.otel.model.Rezervasyon;
 
@@ -27,8 +28,8 @@ public class RezervasyonlarımFrame extends BaseMainFrame {
         JScrollPane scrollPane = new JScrollPane(rezervasyonContainer);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-        List<Rezervasyon> tumRezervasyonlar = new RezervasyonDB().tumRezervasyonlar();
-        for(Rezervasyon r : tumRezervasyonlar){
+        List<Rezervasyon> musteriRezarvasyonlari = new RezervasyonDB().musteriRezervasyonlari(SessionManager.getInstance().getUserId());
+        for(Rezervasyon r : musteriRezarvasyonlari){
             Oda oda = new OdaDB().getOda(r.getOdaId());
 
             JPanel rezervasyonPanel = new JPanel(new GridLayout(8, 2, 10, 5));
