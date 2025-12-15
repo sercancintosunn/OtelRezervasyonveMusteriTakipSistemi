@@ -127,9 +127,9 @@ public class RezervasyonDB {
         List<Rezervasyon> rezervasyonlar = new ArrayList<>();
 
         String sql = "select r.*, m.ad as musteriAd, m.soyad as musteriSoyad, o.odaNumarasi " +
-                    "from rezervasayonlar r" +
-                    "join musteriler m on r.musteriId = m.id" +
-                    "join odalar o on r.odaId = o.id" +
+                    "from rezervasyonlar r " +
+                    "join musteriler m on r.musteriId = m.id " +
+                    "join odalar o on r.odaId = o.id " +
                     "order by r.girisTarihi desc";
 
         try(Statement statement = connection.createStatement();
@@ -244,8 +244,8 @@ public class RezervasyonDB {
             rezervasyon.setId(sonuc.getInt("id"));
             rezervasyon.setMusteriId(sonuc.getInt("musteriId"));
             rezervasyon.setOdaId(sonuc.getInt("odaId"));
-            rezervasyon.setGirisTarihi(sonuc.getDate("giris_tarihi"));
-            rezervasyon.setCikisTarihi(sonuc.getDate("cikis_tarihi"));
+            rezervasyon.setGirisTarihi(sonuc.getDate("girisTarihi"));
+            rezervasyon.setCikisTarihi(sonuc.getDate("cikisTarihi"));
             rezervasyon.setKisiSayisi(sonuc.getInt("kisiSayisi"));
             rezervasyon.setToplamFiyat(sonuc.getDouble("toplamFiyat"));
             rezervasyon.setDurum(sonuc.getString("durum"));

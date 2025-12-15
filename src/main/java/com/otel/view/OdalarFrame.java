@@ -18,8 +18,6 @@ public class OdalarFrame extends BaseMainFrame {
 
     @Override
     protected void initContent() {
-        contentPanel.setLayout(new BorderLayout());
-
         JPanel odalarContainer = new JPanel();
         odalarContainer.setLayout(new BoxLayout(odalarContainer, BoxLayout.Y_AXIS));
         odalarContainer.setBackground(Color.WHITE);
@@ -50,12 +48,19 @@ public class OdalarFrame extends BaseMainFrame {
 
             JButton btnRezerve = new JButton("Rezerve Et");
 
-            if(oda.getDurum().toUpperCase() != "DOLU"){
+            if(oda.getDurum().equals("MUSAİT")){
                 btnRezerve.setBackground(Color.BLUE);
                 setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                btnRezerve.setEnabled(true);
+
+                btnRezerve.addActionListener(e-> {
+                    controller.rezerveEt(oda);
+                });
             }
             else{
+                setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                 btnRezerve.setBackground(Color.GRAY);
+                btnRezerve.setEnabled(false);
             }
 
             odaPanel.add(btnRezerve);

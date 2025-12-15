@@ -97,6 +97,10 @@ public abstract class BaseMainFrame extends JFrame {
             dispose();
             new OdalarFrame().setVisible(true);
         });
+        btnRezervasyon.addActionListener(e -> {
+            dispose();
+            new RezervasyonlarımFrame().setVisible(true);
+        });
     }
 
     public void showMessage(String message) {
