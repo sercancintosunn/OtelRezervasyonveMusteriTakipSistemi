@@ -21,7 +21,7 @@ public class RezervasyonController {
 
     private void initController(){
         view.getBtnRezervasyon().addActionListener(e -> {
-            // Ödeme yöntemi seçimi
+
             String[] odemeYontemleri = {"Nakit", "Kredi Kartı"};
             int secim = JOptionPane.showOptionDialog(
                     view,
@@ -35,7 +35,7 @@ public class RezervasyonController {
             );
 
             if (secim == -1) {
-                // Kullanıcı iptal etti
+
                 return;
             }
 
@@ -43,14 +43,14 @@ public class RezervasyonController {
             boolean odemeBasarili = false;
 
             if (secim == 0) {
-                // Nakit seçildi
+
                 strategyManagment.setPayment(new Nakit());
                 odemeBasarili = strategyManagment.odemeYap(
                         view.getToplamFiyat(),
                         SessionManager.getInstance().getUser().getFullname()
                 );
             } else if (secim == 1) {
-                // Kredi Kartı seçildi - Bilgileri al
+
                 JPanel krediKartiPanel = new JPanel(new java.awt.GridLayout(4, 2, 10, 10));
 
                 JTextField txtKartNumarasi = new JTextField(16);
@@ -100,12 +100,12 @@ public class RezervasyonController {
                             SessionManager.getInstance().getUser().getFullname()
                     );
                 } else {
-                    // Kullanıcı kredi kartı bilgilerini girmekten vazgeçti
+
                     return;
                 }
             }
 
-            // Ödeme başarılıysa rezervasyonu kaydet
+
             if (odemeBasarili) {
                 int musteriID = SessionManager.getInstance().getUserId();
                 int odaID = view.getOda().getId();

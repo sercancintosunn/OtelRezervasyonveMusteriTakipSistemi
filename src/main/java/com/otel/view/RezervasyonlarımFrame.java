@@ -63,13 +63,13 @@ public class RezervasyonlarımFrame extends BaseMainFrame {
             rezervasyonPanel.add(lblDurum);
 
             if (r.getDurum().equals("BEKLEMEDE")) {
-                // Durum BEKLEMEDE ise butonu oluştur ve ekle
+
                 btnIptal = new JButton("İptal Et");
                 btnIptal.setBackground(Color.RED);
                 btnIptal.setForeground(Color.WHITE);
                 btnIptal.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-                // İptal aksiyonu (Onay penceresi eklendi)
+
                 btnIptal.addActionListener(e -> {
                     int confirm = JOptionPane.showConfirmDialog(this,
                             "Rezervasyonu iptal etmek istediğinize emin misiniz?",
@@ -83,11 +83,11 @@ public class RezervasyonlarımFrame extends BaseMainFrame {
                     }
                 });
 
-                rezervasyonPanel.add(new JLabel("")); // Düzen için boşluk
-                rezervasyonPanel.add(btnIptal);       // Butonu ekle
+                rezervasyonPanel.add(new JLabel(""));
+                rezervasyonPanel.add(btnIptal);
             }
             else {
-                // Durum ONAYLANDI veya TAMAMLANDI ise buton yerine boşluk koy
+
                 rezervasyonPanel.add(new JLabel(""));
                 rezervasyonPanel.add(new JLabel(""));
             }
