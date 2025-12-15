@@ -52,6 +52,22 @@ public class OdaDB {
         return null;
     }
 
+    public List<Integer> getOdaNumaraları(){
+        String sql = "SELECT odaNumarasi FROM odalar";
+        List<Integer> list = new ArrayList<>();
+        try(PreparedStatement pst = connection.prepareStatement(sql)){
+            ResultSet sonuc = pst.executeQuery();
+            while (sonuc.next()) {
+                list.add(sonuc.getInt("odaNumarasi"));
+            }
+            return list;
+        }catch (SQLException e){
+            System.err.println("Oda getirme hatası: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public Oda getOdaNumarasi(String odaNumarasi){
         String sql = "SELECT * FROM odalar WHERE odaNumarasi = ?";
 

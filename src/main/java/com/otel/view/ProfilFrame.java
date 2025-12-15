@@ -45,7 +45,7 @@ public class ProfilFrame extends BaseMainFrame {
         telefonGuncelle = new JTextField(musteri.getTelefon());
         contentPanel.add(telefonGuncelle);
         contentPanel.add(new JLabel("Sifre:"));
-        sifreGuncelle = new JTextField(musteri.getSifre());
+        sifreGuncelle = new JTextField("**********");
         contentPanel.add(sifreGuncelle);
         contentPanel.add(new JLabel("Kayıt Tarihi: "));
         contentPanel.add(new JLabel(String.valueOf(musteri.getKayitTarihi())));

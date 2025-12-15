@@ -28,7 +28,6 @@ public class RezervasyonlarımFrame extends BaseMainFrame {
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
         List<Rezervasyon> tumRezervasyonlar = new RezervasyonDB().tumRezervasyonlar();
-        System.out.println(tumRezervasyonlar.size());
         for(Rezervasyon r : tumRezervasyonlar){
             Oda oda = new OdaDB().getOda(r.getOdaId());
 
