@@ -11,7 +11,7 @@ import java.util.List;
 
 public class RezervasyonlarımFrame extends BaseMainFrame {
     private RezervasyonlarımController controller;
-
+    private JButton btnIptal;
     public RezervasyonlarımFrame(){
         super();
         initContent();
@@ -20,20 +20,21 @@ public class RezervasyonlarımFrame extends BaseMainFrame {
 
     @Override
     protected void initContent() {
-        JPanel odalarContainer = new JPanel();
-        odalarContainer.setLayout(new BoxLayout(odalarContainer, BoxLayout.Y_AXIS));
-        odalarContainer.setBackground(Color.WHITE);
+        JPanel rezervasyonContainer = new JPanel();
+        rezervasyonContainer.setLayout(new BoxLayout(rezervasyonContainer, BoxLayout.Y_AXIS));
+        rezervasyonContainer.setBackground(Color.WHITE);
 
-        JScrollPane scrollPane = new JScrollPane(odalarContainer);
+        JScrollPane scrollPane = new JScrollPane(rezervasyonContainer);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
         List<Rezervasyon> tumRezervasyonlar = new RezervasyonDB().tumRezervasyonlar();
+        System.out.println(tumRezervasyonlar.size());
         for(Rezervasyon r : tumRezervasyonlar){
             Oda oda = new OdaDB().getOda(r.getOdaId());
 
-            JPanel rezervasyonPanel = new JPanel(new GridLayout(7, 2, 10, 5));
+            JPanel rezervasyonPanel = new JPanel(new GridLayout(8, 2, 10, 5));
             rezervasyonPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-            rezervasyonPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
+            rezervasyonPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 150));
             rezervasyonPanel.setBackground(Color.WHITE);
 
             rezervasyonPanel.add(new JLabel("Oda No:"));
@@ -43,7 +44,7 @@ public class RezervasyonlarımFrame extends BaseMainFrame {
             rezervasyonPanel.add(new JLabel(oda.getOdaTipi()));
 
             rezervasyonPanel.add(new JLabel("Fiyat:"));
-            rezervasyonPanel.add(new JLabel(String.valueOf(oda.getFiyat())));
+            rezervasyonPanel.add(new JLabel(String.valueOf(r.getToplamFiyat())));
 
             rezervasyonPanel.add(new JLabel("Kişi Sayısı:"));
             rezervasyonPanel.add(new JLabel(String.valueOf(r.getKisiSayisi())));
@@ -52,13 +53,26 @@ public class RezervasyonlarımFrame extends BaseMainFrame {
             rezervasyonPanel.add(new JLabel(String.valueOf(r.getGirisTarihi())));
 
             rezervasyonPanel.add(new JLabel("Çıkış Tarihi:"));
-            rezervasyonPanel.add(new JLabel(String.valueOf(r.getGirisTarihi())));
+            rezervasyonPanel.add(new JLabel(String.valueOf(r.getCikisTarihi())));
 
             rezervasyonPanel.add(new JLabel("Durum:"));
             rezervasyonPanel.add(new JLabel(String.valueOf(r.getDurum())));
 
-            odalarContainer.add(rezervasyonPanel);
-            odalarContainer.add(Box.createVerticalStrut(10));
+            btnIptal = new JButton("İptal Et");
+            btnIptal.setBackground(Color.RED);
+            btnIptal.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            rezervasyonPanel.add(new JLabel(""));
+            rezervasyonPanel.add(btnIptal);
+
+            btnIptal.addActionListener(e -> {
+                showMessage("Rezervasyonunuz başarıyla iptal edilmiştir!");
+                new RezervasyonDB().rezervasyonSil(r.getId());
+                dispose();
+                new RezervasyonlarımFrame().setVisible(true);
+            });
+
+            rezervasyonContainer.add(rezervasyonPanel);
+            rezervasyonContainer.add(Box.createVerticalStrut(10));
         }
 
         contentPanel.add(scrollPane, BorderLayout.CENTER);

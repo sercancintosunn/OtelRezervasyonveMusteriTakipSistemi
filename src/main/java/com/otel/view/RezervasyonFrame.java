@@ -4,6 +4,7 @@ import com.otel.model.Oda;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -53,16 +54,36 @@ public class RezervasyonFrame extends JFrame {
         mainPanel.add(new JLabel("Çıkış Tarihi:"));
         mainPanel.add(cikisTarihi);
 
+
+
         JLabel lblFiyatText = new JLabel("Fiyat:");
         JLabel lblFiyatValue = new JLabel(String.valueOf(oda.getFiyat()));
         mainPanel.add(lblFiyatText);
         mainPanel.add(lblFiyatValue);
 
+
+        girisTarihi.addChangeListener(e -> {
+            Integer secilenKisi = (Integer) comboKisiSayisi.getSelectedItem();
+
+            if (secilenKisi != null) {
+                toplamFiyat = (int) (oda.getFiyat() * secilenKisi * gunSayisiHesaplama(getGirisTarihi() , getCikisTarihi()));
+                lblFiyatValue.setText(String.valueOf(toplamFiyat));
+            }
+        });
+        cikisTarihi.addChangeListener(e -> {
+            Integer secilenKisi = (Integer) comboKisiSayisi.getSelectedItem();
+
+            if (secilenKisi != null) {
+                toplamFiyat = (int) (oda.getFiyat() * secilenKisi * gunSayisiHesaplama(getGirisTarihi() , getCikisTarihi()));
+                lblFiyatValue.setText(String.valueOf(toplamFiyat));
+            }
+        });
+
         comboKisiSayisi.addActionListener(e -> {
             Integer secilenKisi = (Integer) comboKisiSayisi.getSelectedItem();
 
             if (secilenKisi != null) {
-                toplamFiyat = (int) (oda.getFiyat() * secilenKisi);
+                toplamFiyat = (int) (oda.getFiyat() * secilenKisi * gunSayisiHesaplama(getGirisTarihi() , getCikisTarihi()));
                 lblFiyatValue.setText(String.valueOf(toplamFiyat));
             }
         });
@@ -98,7 +119,18 @@ public class RezervasyonFrame extends JFrame {
     public int getToplamFiyat(){
         return toplamFiyat == 0 ? (int) oda.getFiyat() : toplamFiyat;
     }
+
+    public static int gunSayisiHesaplama(Date giris,Date cikis){
+        int farkMillis =
+                (int) (cikis.getTime() - giris.getTime());
+
+        int gunSayisi = farkMillis / (1000 * 60 * 60 * 24);
+        return gunSayisi ==0 ? 1:gunSayisi;
+    }
+
     public void showMessage(String message) {
         JOptionPane.showMessageDialog(this, message);
     }
+
+
 }
