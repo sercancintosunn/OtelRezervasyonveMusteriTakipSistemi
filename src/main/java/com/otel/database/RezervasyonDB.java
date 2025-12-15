@@ -17,8 +17,8 @@ public class RezervasyonDB extends BaseDB {
     }
 
     public boolean rezervasyonEkle(Rezervasyon rezervasyon){
-        String sql = "insert into rezervasyonlar (musteriId,odaId,girisTarihi,cikisTarihi,kisiSayisi,toplamFiyat,durum)" +
-                    "values (?,?,?,?,?,?,?)";
+        String sql = "insert into rezervasyonlar (musteriId,odaId,girisTarihi,cikisTarihi,kisiSayisi,toplamFiyat,durum, odemeYontemi) " +
+                    "values (?,?,?,?,?,?,?,?)";
 
         try(PreparedStatement pst = connection.prepareStatement(sql)){
             pst.setInt(1,rezervasyon.getMusteriId());
@@ -28,6 +28,7 @@ public class RezervasyonDB extends BaseDB {
             pst.setInt(5,rezervasyon.getKisiSayisi());
             pst.setDouble(6,rezervasyon.getToplamFiyat());
             pst.setString(7,rezervasyon.getDurum());
+            pst.setString(8, rezervasyon.getOdemeYontemi());
 
             int sonuc = pst.executeUpdate();
             return sonuc > 0;
@@ -58,10 +59,10 @@ public class RezervasyonDB extends BaseDB {
 
     public Rezervasyon rezervasyonGetirDetayli(int id){
         String sql = "select r.*, m.ad as musteriAd, m.soyad as musteriSoyad, m.telefon as musteriTelefon, " +
-                    "o.odaNumarasi, o.odaTipi, o.fiyat as odaFiyat" +
-                    "from rezervasyonlar r" +
-                    "join musteriler m on r.musteriId = m.id" +
-                    "join odalar o on r.odaId = o.id" +
+                    "o.odaNumarasi, o.odaTipi, o.fiyat as odaFiyat " +
+                    "from rezervasyonlar r " +
+                    "join musteriler m on r.musteriId = m.id " +
+                    "join odalar o on r.odaId = o.id " +
                     "where r.id = ?";
 
         try(PreparedStatement pst = connection.prepareStatement(sql)){
@@ -103,9 +104,9 @@ public class RezervasyonDB extends BaseDB {
         List<Rezervasyon> rezervasyonlar = new ArrayList<>();
 
         String sql = "select r.*, o.odaNumarasi, o.odaTipi  " +
-                    "from rezevasyonlar r" +
-                    "join odalar o on r.odaId = o.id" +
-                    "where r.musteriId = ? and r.durum = 'TAMAMLANDI'" +
+                    "from rezervasyonlar r " +
+                    "join odalar o on r.odaId = o.id " +
+                    "where r.musteriId = ? and r.durum = 'TAMAMLANDI' " +
                     "order by r.cikisTarihi desc";
 
         try(PreparedStatement pst = connection.prepareStatement(sql)){
@@ -192,6 +193,21 @@ public class RezervasyonDB extends BaseDB {
             e.printStackTrace();
         }
         return rezervasyonlar;
+    }
+
+    public void suresiDolanlariTamamla() {
+        String sql = "UPDATE rezervasyonlar SET durum = 'TAMAMLANDI' " +
+                "WHERE cikisTarihi < CURDATE() AND durum = 'ONAYLANDI'";
+
+        try (PreparedStatement pst = connection.prepareStatement(sql)) {
+            int etkilenenSayisi = pst.executeUpdate();
+            if (etkilenenSayisi > 0) {
+                System.out.println(etkilenenSayisi + " adet rezervasyon otomatik tamamlandı.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Otomatik tamamlama hatası: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public boolean rezervasyonDurumGuncelle(int rezervasyonId, String yeniDurum) {

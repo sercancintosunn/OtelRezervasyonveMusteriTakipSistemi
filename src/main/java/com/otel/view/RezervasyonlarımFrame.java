@@ -56,20 +56,41 @@ public class RezervasyonlarımFrame extends BaseMainFrame {
             rezervasyonPanel.add(new JLabel(String.valueOf(r.getCikisTarihi())));
 
             rezervasyonPanel.add(new JLabel("Durum:"));
-            rezervasyonPanel.add(new JLabel(String.valueOf(r.getDurum())));
+            JLabel lblDurum = new JLabel(r.getDurum());
+            if(r.getDurum().equals("ONAYLANDI")) lblDurum.setForeground(new Color(0, 100, 0));
+            else if(r.getDurum().equals("BEKLEMEDE")) lblDurum.setForeground(Color.ORANGE);
+            else lblDurum.setForeground(Color.BLACK);
+            rezervasyonPanel.add(lblDurum);
 
-            btnIptal = new JButton("İptal Et");
-            btnIptal.setBackground(Color.RED);
-            btnIptal.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            rezervasyonPanel.add(new JLabel(""));
-            rezervasyonPanel.add(btnIptal);
+            if (r.getDurum().equals("BEKLEMEDE")) {
+                // Durum BEKLEMEDE ise butonu oluştur ve ekle
+                btnIptal = new JButton("İptal Et");
+                btnIptal.setBackground(Color.RED);
+                btnIptal.setForeground(Color.WHITE);
+                btnIptal.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-            btnIptal.addActionListener(e -> {
-                showMessage("Rezervasyonunuz başarıyla iptal edilmiştir!");
-                new RezervasyonDB().rezervasyonSil(r.getId());
-                dispose();
-                new RezervasyonlarımFrame().setVisible(true);
-            });
+                // İptal aksiyonu (Onay penceresi eklendi)
+                btnIptal.addActionListener(e -> {
+                    int confirm = JOptionPane.showConfirmDialog(this,
+                            "Rezervasyonu iptal etmek istediğinize emin misiniz?",
+                            "İptal Onayı", JOptionPane.YES_NO_OPTION);
+
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        new RezervasyonDB().rezervasyonSil(r.getId());
+                        showMessage("Rezervasyonunuz başarıyla iptal edilmiştir!");
+                        dispose();
+                        new RezervasyonlarımFrame().setVisible(true);
+                    }
+                });
+
+                rezervasyonPanel.add(new JLabel("")); // Düzen için boşluk
+                rezervasyonPanel.add(btnIptal);       // Butonu ekle
+            }
+            else {
+                // Durum ONAYLANDI veya TAMAMLANDI ise buton yerine boşluk koy
+                rezervasyonPanel.add(new JLabel(""));
+                rezervasyonPanel.add(new JLabel(""));
+            }
 
             rezervasyonContainer.add(rezervasyonPanel);
             rezervasyonContainer.add(Box.createVerticalStrut(10));
