@@ -15,9 +15,8 @@ public class Main {
     public static void main(String[] arg){
 
         SwingUtilities.invokeLater(() -> {
-            OdaDB oda = new OdaDB();
-            System.out.println(oda.getOdaNumaraları());
-            new PRezervasyonFrame().setVisible(true);
+
+            new LoginFrame().setVisible(true);
         });
 
     }
