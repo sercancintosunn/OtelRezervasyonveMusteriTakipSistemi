@@ -1,10 +1,11 @@
-🏨 Otel Rezervasyon ve Müşteri Takip Sistemi
-Bu proje, Java (Swing) kullanılarak geliştirilmiş, MVC (Model-View-Controller) mimarisine uygun, kapsamlı bir otel rezervasyon ve yönetim otomasyonudur. Proje, nesne tabanlı programlama prensiplerini ve birçok Yazılım Tasarım Kalıbını (Design Patterns) aktif olarak kullanmaktadır.
+🏨 Otel Rezervasyon ve Müşteri Takip Sistemi 
+
+Bu proje, Java (Swing) kullanılarak geliştirilmiş, MVC (Model-View-Controller) mimarisine uygun, basit bir otel rezervasyon ve yönetim otomasyonudur. Proje, nesne tabanlı programlama prensiplerini ve birçok Yazılım Tasarım Kalıbını (Design Patterns) aktif olarak kullanmaktadır.
 
 🚀 Özellikler
 Kullanıcı Yönetimi:
 
-Müşteri ve Personel için ayrı giriş/kayıt ekranları.
+Müşteri ve Personel için giriş/kayıt ekranları.
 
 Rol tabanlı yetkilendirme ve arayüz yönetimi (SessionManager).
 
@@ -110,3 +111,11 @@ Projeyi Çalıştırın:
 Maven bağımlılıklarını yükleyin.
 
 src/main/java/com/otel/Main.java sınıfını çalıştırın.
+
+Ekran Görüntüleri:
+
+Giriş Sayfası:
+
+<img width="723" height="484" alt="image" src="https://github.com/user-attachments/assets/d2a370fa-f510-40f9-90e7-ffd275ff107c" />
+
+
