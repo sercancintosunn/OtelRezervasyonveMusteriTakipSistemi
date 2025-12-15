@@ -1,5 +1,6 @@
 package com.otel.controller;
 
+import com.otel.factory.MusteriFactory;
 import com.otel.model.Musteri;
 import com.otel.view.LoginFrame;
 import com.otel.database.MusteriDB;
@@ -49,7 +50,8 @@ public class RegisterController {
         }
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
-        Musteri musteri = new Musteri(2,tckn,ad,soyad,email,telefon, username, password,timestamp);
+        MusteriFactory mf = new MusteriFactory();
+        Musteri musteri = (Musteri) mf.createUser(tckn,ad,soyad,email,telefon, username, password);
         musteriDB.musteriEkle(musteri);
         view.showMessage("Kayıt Başarılı!");
         view.dispose();
