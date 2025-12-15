@@ -15,15 +15,14 @@ public class OdaDB extends BaseDB {
     }
 
     public boolean odaEkle(Oda oda){
-        String sql = "INSERT INTO odalar (odaNumarasi,odaTipi,kapasite,fiyat,durum)" +
-                "VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO odalar (odaNumarasi,odaTipi,kapasite,fiyat)" +
+                "VALUES (?,?,?,?)";
 
         try(PreparedStatement pst = connection.prepareStatement(sql)){
             pst.setString(1, oda.getOdaNumarasi());
             pst.setString(2,oda.getOdaTipi());
             pst.setInt(3,oda.getKapasite());
             pst.setDouble(4,oda.getFiyat());
-            pst.setString(5, oda.getDurum());
 
             int sonuc = pst.executeUpdate();
             return sonuc > 0;
@@ -176,6 +175,7 @@ public class OdaDB extends BaseDB {
             pst.setInt(3,oda.getKapasite());
             pst.setDouble(4,oda.getFiyat());
             pst.setString(5,oda.getDurum());
+            pst.setInt(6,oda.getId());
 
             int sonuc = pst.executeUpdate();
             return sonuc > 0;

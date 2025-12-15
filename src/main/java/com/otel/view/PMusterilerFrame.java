@@ -1,5 +1,6 @@
 package com.otel.view;
 
+import com.otel.controller.PMusterilerController;
 import com.otel.database.MusteriDB;
 import com.otel.model.Musteri;
 
@@ -10,10 +11,12 @@ public class PMusterilerFrame extends PBaseMainFrame{
 
     private JButton musteriDetayi;
     private JButton musteriyiDuzenle;
+    private PMusterilerController controller;
 
     public PMusterilerFrame(){
         super();
         initContent();
+        controller = new PMusterilerController(this);
     }
 
     @Override
@@ -28,13 +31,16 @@ public class PMusterilerFrame extends PBaseMainFrame{
         MusteriDB musteriDB = new MusteriDB();
 
         for (Musteri musteri : musteriDB.tumMusteriler()) {
-            JPanel musteriPanel = new JPanel(new GridLayout(5, 2, 10, 5));
+            JPanel musteriPanel = new JPanel(new GridLayout(6, 2, 10, 5));
             musteriPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
             musteriPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
             musteriPanel.setBackground(Color.WHITE);
 
             musteriPanel.add(new JLabel("Ad - Soyad: "));
             musteriPanel.add(new JLabel(musteri.getFullname()));
+
+            musteriPanel.add(new JLabel("TC No:: "));
+            musteriPanel.add(new JLabel(musteri.getTcNo()));
 
             musteriPanel.add(new JLabel("Kullanıcı Adı: "));
             musteriPanel.add(new JLabel(musteri.getUserName()));
@@ -46,7 +52,15 @@ public class PMusterilerFrame extends PBaseMainFrame{
             musteriPanel.add(new JLabel(musteri.getEmail()));
 
             musteriDetayi = new JButton("Müşteri Detayı");
+            musteriDetayi.addActionListener(e -> {
+                controller.musteriDetayiAc(musteri.getId());
+            });
+
             musteriyiDuzenle = new JButton("Müşteriyi Düzenle");
+
+            musteriyiDuzenle.addActionListener(e -> {
+               controller.musteriDuzenleAc(musteri.getId());
+            });
 
             musteriPanel.add(musteriDetayi);
             musteriPanel.add(musteriyiDuzenle);
@@ -56,5 +70,13 @@ public class PMusterilerFrame extends PBaseMainFrame{
             musterilerContainer.add(Box.createVerticalStrut(10));
         }
         contentPanel.add(scrollPane, BorderLayout.CENTER);
+    }
+
+    public JButton getMusteriyiDuzenle() {
+        return musteriyiDuzenle;
+    }
+
+    public JButton getMusteriDetayi() {
+        return musteriDetayi;
     }
 }
