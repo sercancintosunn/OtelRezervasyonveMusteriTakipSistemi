@@ -87,6 +87,10 @@ public abstract class PBaseMainFrame extends JFrame {
             dispose();
             new PRezervasyonFrame().setVisible(true);
         });
+        btnMusteriler.addActionListener(e -> {
+            dispose();
+            new PMusterilerFrame().setVisible(true);
+        });
     }
 
     public void showMessage(String message) {
