@@ -57,11 +57,47 @@ public class MusteriDB extends BaseDB {
         }
     }
 
+    public boolean musteriBilgileriGuncelle(int id, String username,String email, String telefon){
+        String sql = "UPDATE musteriler SET userName = ? , email = ? , telefon = ?  WHERE id = ?";
+        try (PreparedStatement pst = connection.prepareStatement(sql)) {
+            pst.setString(1, username);
+            pst.setString(2, email);
+            pst.setString(3, telefon);
+            pst.setInt(4, id);
+
+            int sonuc = pst.executeUpdate();
+            return sonuc > 0;
+        } catch (SQLException e) {
+            System.err.println("Müşteri güncelleme hatası: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+
+        }
+    }
+
     public Musteri getMusteri(int id) {
         String sql = "SELECT * FROM musteriler WHERE id = ?";
 
         try (PreparedStatement pst = connection.prepareStatement(sql)) {
             pst.setInt(1, id);
+            ResultSet sonuc = pst.executeQuery();
+
+            if (sonuc.next()) {
+                return mapToMusteri(sonuc);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Müşteri getirme hatası: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Musteri getMusteri(String tcNo) {
+        String sql = "SELECT * FROM musteriler WHERE tcNo = ?";
+
+        try (PreparedStatement pst = connection.prepareStatement(sql)) {
+            pst.setString(1, tcNo);
             ResultSet sonuc = pst.executeQuery();
 
             if (sonuc.next()) {

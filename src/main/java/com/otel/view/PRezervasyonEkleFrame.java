@@ -1,5 +1,7 @@
 package com.otel.view;
 
+import com.otel.controller.PRezervasyonController;
+import com.otel.controller.PRezervasyonEkleController;
 import com.otel.controller.RezervasyonController;
 import com.otel.database.OdaDB;
 import com.otel.model.Oda;
@@ -10,13 +12,14 @@ import java.util.Date;
 
 public class PRezervasyonEkleFrame extends JFrame {
 
-    private RezervasyonController controller;
+    private PRezervasyonEkleController controller;
     private Oda oda;
 
     private JButton btnRezervasyon;
     private JComboBox<Integer> comboKisiSayisi;
     private JComboBox<Integer> comboOdaNumarası;
 
+    private JTextField musteriTC;
     private JSpinner girisTarihi;
     private JSpinner cikisTarihi;
 
@@ -29,18 +32,22 @@ public class PRezervasyonEkleFrame extends JFrame {
 
     public PRezervasyonEkleFrame() {
         initUI();
+        controller = new PRezervasyonEkleController(this);
     }
 
     private void initUI() {
-        setTitle("Rezervasyon");
+        setTitle("Rezervasyon Ekle");
         setSize(600, 400);
         setLocationRelativeTo(null);
         setResizable(false);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        JPanel mainPanel = new JPanel(new GridLayout(7, 2, 10, 10));
+        JPanel mainPanel = new JPanel(new GridLayout(8, 2, 10, 10));
 
-        // ODA NUMARASI
+        mainPanel.add(new JLabel("Müşteri TC:"));
+        musteriTC = new JTextField();
+        mainPanel.add(musteriTC);
+
         comboOdaNumarası = new JComboBox<>();
         for (Integer numara : odalar.getOdaNumaraları()) {
             comboOdaNumarası.addItem(numara);
@@ -49,38 +56,31 @@ public class PRezervasyonEkleFrame extends JFrame {
         mainPanel.add(new JLabel("Oda Numarası:"));
         mainPanel.add(comboOdaNumarası);
 
-        // İLK ODA
         oda = odalar.getOdaNumarasi(comboOdaNumarası.getSelectedItem().toString());
 
-        // ODA TİPİ
         lblOdaTipi = new JLabel(oda.getOdaTipi());
         mainPanel.add(new JLabel("Tip:"));
         mainPanel.add(lblOdaTipi);
 
-        // KİŞİ SAYISI
         comboKisiSayisi = new JComboBox<>();
         mainPanel.add(new JLabel("Kişi Sayısı:"));
         mainPanel.add(comboKisiSayisi);
         kisiSayisiGuncelle(oda.getKapasite());
 
-        // GİRİŞ TARİHİ
         girisTarihi = new JSpinner(new SpinnerDateModel());
         girisTarihi.setEditor(new JSpinner.DateEditor(girisTarihi, "dd.MM.yyyy"));
         mainPanel.add(new JLabel("Giriş Tarihi:"));
         mainPanel.add(girisTarihi);
 
-        // ÇIKIŞ TARİHİ
         cikisTarihi = new JSpinner(new SpinnerDateModel());
         cikisTarihi.setEditor(new JSpinner.DateEditor(cikisTarihi, "dd.MM.yyyy"));
         mainPanel.add(new JLabel("Çıkış Tarihi:"));
         mainPanel.add(cikisTarihi);
 
-        // FİYAT
         lblFiyatValue = new JLabel(String.valueOf((int) oda.getFiyat()));
         mainPanel.add(new JLabel("Fiyat:"));
         mainPanel.add(lblFiyatValue);
 
-        // ODA DEĞİŞİNCE
         comboOdaNumarası.addActionListener(e -> {
             oda = odalar.getOdaNumarasi(
                     comboOdaNumarası.getSelectedItem().toString()
@@ -91,20 +91,16 @@ public class PRezervasyonEkleFrame extends JFrame {
             fiyatGuncelle();
         });
 
-        // DİĞER DEĞİŞİKLİKLER
         girisTarihi.addChangeListener(e -> fiyatGuncelle());
         cikisTarihi.addChangeListener(e -> fiyatGuncelle());
         comboKisiSayisi.addActionListener(e -> fiyatGuncelle());
 
-        // BUTON
         btnRezervasyon = new JButton("Rezerve Et");
         mainPanel.add(new JLabel(""));
         mainPanel.add(btnRezervasyon);
 
         add(mainPanel, BorderLayout.CENTER);
     }
-
-    // ===== YARDIMCI METODLAR =====
 
     private void kisiSayisiGuncelle(int kapasite) {
         comboKisiSayisi.removeAllItems();
@@ -157,5 +153,9 @@ public class PRezervasyonEkleFrame extends JFrame {
 
     public void showMessage(String message) {
         JOptionPane.showMessageDialog(this, message);
+    }
+
+    public String getMusteriTC() {
+        return musteriTC.getText();
     }
 }

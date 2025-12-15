@@ -9,7 +9,8 @@ import java.awt.*;
 public class POdalarFrame extends PBaseMainFrame {
 
     private OdaDB odaDB = new OdaDB();
-
+    private JButton btnOdaDuzenle;
+    private JButton btnOdaEkle;
     public POdalarFrame(){
         super();
         initContent();
@@ -24,8 +25,16 @@ public class POdalarFrame extends PBaseMainFrame {
         JScrollPane scrollPane = new JScrollPane(odalarContainer);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
+        btnOdaEkle = new JButton("Oda Ekle");
+        odalarContainer.add(btnOdaEkle);
+
+        btnOdaEkle.addActionListener(e -> {
+            new OdaEkleFrame().setVisible(true);
+        });
+
+
         for (Oda oda : odaDB.tumOdalar()) {
-            JPanel odaPanel = new JPanel(new GridLayout(5, 2, 10, 5));
+            JPanel odaPanel = new JPanel(new GridLayout(6, 2, 10, 5));
             odaPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
             odaPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
             odaPanel.setBackground(Color.WHITE);
@@ -45,6 +54,12 @@ public class POdalarFrame extends PBaseMainFrame {
             odaPanel.add(new JLabel("Durum:"));
             odaPanel.add(new JLabel(oda.getDurum()));
 
+            btnOdaDuzenle = new JButton("Odayı Düzenle");
+            odaPanel.add(btnOdaDuzenle);
+
+            btnOdaDuzenle.addActionListener(e -> {
+               new OdaDuzenleFrame(oda).setVisible(true);
+            });
 
             odalarContainer.add(odaPanel);
             odalarContainer.add(Box.createVerticalStrut(10));
