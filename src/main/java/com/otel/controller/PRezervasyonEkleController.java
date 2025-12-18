@@ -19,12 +19,11 @@ public class PRezervasyonEkleController {
         view.getBtnRezervasyon().addActionListener(e -> {
             view.showMessage("Rezervasyonunuz Başarıyla Oluşturuldu");
 
-            // Müşteri ID'sini TC'den bul
+
             int musteriID = new MusteriDB().getMusteri(view.getMusteriTC()).getId();
             int odaID = view.getOda().getId();
 
-            // --- HATA DÜZELTMESİ BURADA YAPILDI ---
-            // Eksik olan 'odemeYontemi' parametresi (String) eklendi.
+
             Rezervasyon rezervasyon = new Rezervasyon(
                     0,
                     musteriID,
@@ -34,7 +33,7 @@ public class PRezervasyonEkleController {
                     view.getKisiSayisi(),
                     view.getToplamFiyat(),
                     "BEKLEMEDE",
-                    "NAKIT", // <--- EKLENEN KISIM: Ödeme yöntemi stringi
+                    "NAKIT",
                     new Timestamp(System.currentTimeMillis())
             );
 

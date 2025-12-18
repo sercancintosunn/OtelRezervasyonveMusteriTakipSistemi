@@ -5,6 +5,8 @@ import com.otel.database.RezervasyonDB;
 import com.otel.helper.SessionManager;
 import com.otel.model.Oda;
 import com.otel.model.Rezervasyon;
+import com.otel.state.IRezervasyonState;
+import com.otel.state.RezervasyonFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -76,7 +78,8 @@ public class RezervasyonlarımFrame extends BaseMainFrame {
                             "İptal Onayı", JOptionPane.YES_NO_OPTION);
 
                     if (confirm == JOptionPane.YES_OPTION) {
-                        new RezervasyonDB().rezervasyonSil(r.getId());
+                        IRezervasyonState mevcutDurum = RezervasyonFactory.getState(r.getDurum());
+                        mevcutDurum.iptalEt(r);
                         showMessage("Rezervasyonunuz başarıyla iptal edilmiştir!");
                         dispose();
                         new RezervasyonlarımFrame().setVisible(true);
