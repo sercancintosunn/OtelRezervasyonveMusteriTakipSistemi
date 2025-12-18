@@ -173,14 +173,14 @@ public class GecmisKonaklamalarFrame extends BaseMainFrame {
         if (rez == null) return;
 
         String detay = String.format(
-                " DETAYLAR\n\n" +
+                "DETAYLAR\n\n" +
                         "Rezervasyon No: %d\n" +
-                        " Oda: %s (%s)\n" +
-                        " Giriş: %s\n" +
-                        " Çıkış: %s\n" +
-                        " Süre: %d gün\n" +
-                        " Tutar: %.2f TL\n" +
-                        "✔ Durum: TAMAMLANDI\n",
+                        "Oda: %s (%s)\n" +
+                        "Giriş: %s\n" +
+                        "Çıkış: %s\n" +
+                        "Süre: %d gün\n" +
+                        "Tutar: %.2f TL\n" +
+                        "Durum: TAMAMLANDI\n",
                 rez.getId(),
                 rez.getOda() != null ? rez.getOda().getOdaNumarasi() : "-",
                 rez.getOda() != null ? rez.getOda().getOdaTipi() : "-",
